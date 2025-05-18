@@ -13,10 +13,10 @@ def create_app():
 
     CORS(
         app,
-        resources={r"/*": {"origins": "*"}},
+        origins="https://md-editor-frontend.vercel.app",
         supports_credentials=True,
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization"]
+        allow_headers=["Content-Type", "Authorization"],
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )
 
     template = {
