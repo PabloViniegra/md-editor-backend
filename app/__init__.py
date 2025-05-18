@@ -54,8 +54,13 @@ def create_app():
         'specs_route': '/docs/'
     }
     Swagger(app, config=swagger_config, template=template)
-    CORS(app, resources={r"/*": {"origins": "*"}}, methods=[
-         "GET", "POST", "PUT", "DELETE", "OPTIONS"], allow_headers=["Content-Type", "Authorization"])
+    CORS(
+        app,
+        resources={r"/auth/*": {"origins": "*"},
+                   r"/posts/*": {"origins": "*"}},
+        supports_credentials=True,
+        allow_headers=["Content-Type", "Authorization"]
+    )
     db.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
