@@ -11,6 +11,14 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    CORS(
+        app,
+        resources={r"/*": {"origins": "*"}},
+        supports_credentials=True,
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"]
+    )
+
     template = {
         "swagger": "2.0",
         "info": {
@@ -54,13 +62,7 @@ def create_app():
         'specs_route': '/docs/'
     }
     Swagger(app, config=swagger_config, template=template)
-    CORS(
-        app,
-        resources={r"/auth/*": {"origins": "*"},
-                   r"/posts/*": {"origins": "*"}},
-        supports_credentials=True,
-        allow_headers=["Content-Type", "Authorization"]
-    )
+
     db.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
