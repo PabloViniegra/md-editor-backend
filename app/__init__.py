@@ -13,11 +13,21 @@ def create_app():
 
     CORS(
         app,
-        origins="https://md-editor-frontend.vercel.app",
-        supports_credentials=True,
+        resources={r"/*": {"origins": "*"}},
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization"],
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        automatic_options=True,
+        send_wildcard=True
     )
+
+    @app.after_request
+    def _add_cors_headers(response):
+        response.headers.setdefault("Access-Control-Allow-Origin", "*")
+        response.headers.setdefault(
+            "Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+        response.headers.setdefault(
+            "Access-Control-Allow-Headers", "Content-Type,Authorization")
+        return response
 
     template = {
         "swagger": "2.0",
